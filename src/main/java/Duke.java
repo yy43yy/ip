@@ -3,20 +3,21 @@ import java.util.Scanner;
 public class Duke {
     public static void main(String[] args) {
         String line;
-        Scanner in  = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
 
+        String[] addList = new String[100];
+        int i = 0;
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm yy");
         System.out.println("What can I do for you?");
 
-        while(true) {
+        while (true) {
             line = in.nextLine();
 
             if (line.contains("list")) {
-                System.out.println("____________________________________________________________");
-                System.out.println("list");
-                System.out.println("____________________________________________________________");
-
+                for (int j = 0; j < i; j++) {
+                    System.out.println((j+1) + ". " + addList[j]);
+                }
             } else if (line.contains("blah")) {
                 System.out.println("____________________________________________________________");
                 System.out.println("blah");
@@ -27,13 +28,15 @@ public class Duke {
                 System.out.println(" Bye. Hope to see you again soon!");
                 System.out.println("____________________________________________________________");
                 break;
-            } else{
+            } else {
+                addList[i] = line;
+                i++;
                 System.out.println("____________________________________________________________");
-                System.out.println(" Invalid, retry!");
+                System.out.println(" added: " + line);
                 System.out.println("____________________________________________________________");
 
             }
-        }
 
+        }
     }
 }
