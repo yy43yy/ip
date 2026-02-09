@@ -44,7 +44,7 @@ public class Duke {
 
             } else if(input.startsWith("unmark ")){
                 String[] parts = input.split(" ");
-                int taskNumberblah = Integer.parseInt(parts[1]);
+                int taskNumber = Integer.parseInt(parts[1]);
                 tasks[taskNumber-1].unmarkDone();
 
                 System.out.println("____________________________________________________________");
@@ -52,6 +52,39 @@ public class Duke {
                 System.out.println(tasks[taskNumber-1]);
                 System.out.println("____________________________________________________________");
 
+
+            } else if(input.startsWith("todo")){
+                input = input.substring(4).trim();
+                tasks[taskCount] = new Todos(input);
+
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(tasks[taskCount].toString());
+                taskCount++;
+                System.out.println("Now you have " + taskCount + " tasks in the list");
+                System.out.println("____________________________________________________________");
+
+            } else if(input.startsWith("deadline")){
+                input = input.substring((8)).trim();
+                String[] parts = input.split("/by");
+                tasks[taskCount] = new Deadlines(parts[0],parts[1]);
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(tasks[taskCount].toString());
+                taskCount++;
+                System.out.println("Now you have " + taskCount + " tasks in the list");
+                System.out.println("____________________________________________________________");
+
+            }else if(input.startsWith("event")){
+                input = input.substring((5)).trim();
+                String[] parts = input.split("/");
+                tasks[taskCount]= new Events(parts[0],parts[1].substring(4),parts[2].substring(2));
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(tasks[taskCount].toString());
+                taskCount++;
+                System.out.println("Now you have " + taskCount + " tasks in the list");
+                System.out.println("____________________________________________________________");
 
             }else {
                 tasks[taskCount] = new Task(input);
