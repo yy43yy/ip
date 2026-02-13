@@ -33,8 +33,11 @@ public class Duke {
         printLine();
     }
 
-    public static int handleTodo(String input,Task[] tasks,int taskCount ){
+    public static int handleTodo(String input,Task[] tasks,int taskCount ) throws DukeException{
         input = input.substring(4).trim();
+        if(input.isEmpty()){
+            throw new DukeException("The description of a todo cannot be empty.");
+        }
         tasks[taskCount] = new Todos(input);
 
         printLine();
@@ -45,8 +48,11 @@ public class Duke {
         printLine();
         return taskCount;
     }
-    public static int handleDeadline(String input,Task[] tasks,int taskCount){
+    public static int handleDeadline(String input,Task[] tasks,int taskCount) throws DukeException{
         input = input.substring((8)).trim();
+        if(input.isEmpty()){
+            throw new DukeException("The description of a deadline cannot be empty.");
+        }
         String[] parts = input.split("/by");
         tasks[taskCount] = new Deadlines(parts[0],parts[1]);
         printLine();
@@ -57,8 +63,11 @@ public class Duke {
         printLine();
         return taskCount;
     }
-    public static int handleEvent(String input,Task[] tasks,int taskCount){
+    public static int handleEvent(String input,Task[] tasks,int taskCount)throws DukeException{
         input = input.substring((5)).trim();
+        if(input.isEmpty()){
+            throw new DukeException("The description of a event cannot be empty.");
+        }
         String[] parts = input.split("/");
         tasks[taskCount]= new Events(parts[0],parts[1].substring(4),parts[2].substring(2));
         printLine();
@@ -84,34 +93,57 @@ public class Duke {
             input = in.nextLine();
             String [] words = input.split(" ",2);
             String command = words[0];
+            try {
+                switch (command) {
+                    case "list":
+                        printList(tasks, taskCount);
+                        break;
+                    case "mark":
+                        handleMark(input, tasks);
+                        break;
+                    case "unmark":
+                        handleUnmark(input, tasks);
+                        break;
+                    case "todo":
+                        try {
+                            taskCount = handleTodo(input, tasks, taskCount);
+                        } catch (DukeException e) {
+                            printLine();
+                            System.out.println(" OOPS!!! " + e.getMessage());
+                            printLine();
+                        }
+                        break;
+                    case "deadline":
+                        try {
+                            taskCount = handleDeadline(input, tasks, taskCount);
+                        } catch (DukeException e) {
+                            printLine();
+                            System.out.println(" OOPS!!! " + e.getMessage());
+                            printLine();
+                        }
+                        break;
+                    case "event":
+                        try {
+                            taskCount = handleEvent(input, tasks, taskCount);
+                        } catch (DukeException e) {
+                            printLine();
+                            System.out.println(" OOPS!!! " + e.getMessage());
+                            printLine();
+                        }
+                        break;
+                    case "bye":
+                        printLine();
+                        System.out.println(" Bye. Hope to see you again soon!");
+                        printLine();
+                        return;
+                    default: throw new DukeException("I'm sorry, but I don't know what that means :-(");
 
-            switch (command){
-                case"list":
-                    printList(tasks,taskCount);
-                    break;
-                case "mark":
-                    handleMark(input,tasks);
-                    break;
-                case "unmark":
-                    handleUnmark(input,tasks);
-                    break;
-                case "todo":
-                    taskCount=handleTodo(input,tasks,taskCount);
-                    break;
-                case "deadline":
-                    taskCount=handleDeadline(input,tasks,taskCount);
-                    break;
-                case "event":
-                    taskCount=handleEvent(input,tasks,taskCount);
-                    break;
-                case "bye":
+                }
+            }catch(DukeException e){
                     printLine();
-                    System.out.println(" Bye. Hope to see you again soon!");
+                    System.out.println(" OOPS!!! " + e.getMessage());
                     printLine();
-                    return;
-                default:
-                    System.out.println("Invalid command, type something else");
-            }
+                }
 
         }
     }
