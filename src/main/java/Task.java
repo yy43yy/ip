@@ -1,4 +1,4 @@
-public class Task {
+public abstract class Task {
 
     protected String description;
     protected boolean isDone;
@@ -12,15 +12,17 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
-    public void markDone(){
-        isDone=true;
+    public void markDone() {
+        isDone = true;
     }
 
-    public void unmarkDone(){
+    public void unmarkDone() {
         isDone = false;
     }
 
-    public String toString(){
-        return "[" + getStatusIcon() +"]" + description;
+    public String toString() {
+        return "[" + getStatusIcon() + "]" + description;
     }
+
+    public abstract String toStorageString();
 }

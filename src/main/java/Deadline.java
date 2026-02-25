@@ -15,4 +15,8 @@ public class Deadline extends Task{
         return "[D]" + super.toString() + "(by:" +getBy() +")";
     }
 
+    public String toStorageString() {
+        return "D | " + (isDone?"1" :"0") +" | " + description + " | "+getBy();
+    }
 }
+

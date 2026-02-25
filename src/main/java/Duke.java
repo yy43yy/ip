@@ -12,35 +12,39 @@ public class Duke {
         }
     }
 
-    public static void handleMark(String input, ArrayList<Task> tasks) {
+    public static void handleMark(String input, ArrayList<Task> tasks,Storage storage) throws DukeException {
         String[] parts = input.split(" ");
         int taskNumber = Integer.parseInt(parts[1]);
         tasks.get(taskNumber-1).markDone();
 
+        storage.writeToFile(tasks);
         printLine();
         System.out.println("Nice! I've marked this task as done:");
         System.out.println(tasks.get(taskNumber-1));
         printLine();
     }
 
-    public static void handleUnmark(String input, ArrayList<Task> tasks) {
+    public static void handleUnmark(String input, ArrayList<Task> tasks,Storage storage) throws  DukeException{
         String[] parts = input.split(" ");
         int taskNumber = Integer.parseInt(parts[1]);
         tasks.get(taskNumber-1).unmarkDone();
 
+        storage.writeToFile(tasks);
         printLine();
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println(tasks.get(taskNumber-1));
         printLine();
     }
 
-    public static void handleTodo(String input, ArrayList<Task> tasks) throws DukeException {
+    public static void handleTodo(String input, ArrayList<Task> tasks,Storage storage) throws DukeException {
         input = input.substring(4).trim();
         if (input.isEmpty()) {
             throw new DukeException("The description of a todo cannot be empty.");
         }
         tasks.add(new Todos(input)) ;
 
+        storage.writeToFile(tasks);
+
         printLine();
         System.out.println("Got it. I've added this task:");
         System.out.println(tasks.get(tasks.size()-1).toString());
@@ -50,13 +54,15 @@ public class Duke {
 
     }
 
-    public static void handleDeadline(String input, ArrayList<Task> tasks) throws DukeException {
+    public static void handleDeadline(String input, ArrayList<Task> tasks,Storage storage) throws DukeException {
         input = input.substring((8)).trim();
         if (input.isEmpty()) {
             throw new DukeException("The description of a deadline cannot be empty.");
         }
         String[] parts = input.split("/by");
         tasks.add(new Deadline(parts[0], parts[1]));
+
+        storage.writeToFile(tasks);
         printLine();
         System.out.println("Got it. I've added this task:");
         System.out.println(tasks.get(tasks.size()-1).toString());
@@ -66,13 +72,16 @@ public class Duke {
 
     }
 
-    public static void handleEvent(String input, ArrayList<Task> tasks) throws DukeException {
+    public static void handleEvent(String input, ArrayList<Task> tasks,Storage storage) throws DukeException {
         input = input.substring((5)).trim();
         if (input.isEmpty()) {
             throw new DukeException("The description of a event cannot be empty.");
         }
         String[] parts = input.split("/");
         tasks.add(new Events(parts[0], parts[1].substring(4), parts[2].substring(2)))  ;
+
+        storage.writeToFile(tasks);
+
         printLine();
         System.out.println("Got it. I've added this task:");
         System.out.println(tasks.get(tasks.size()-1).toString());
@@ -86,8 +95,18 @@ public class Duke {
         String input;
         Scanner in = new Scanner(System.in);
 
+        Storage storage = new Storage("data","yy.txt");
 
-        ArrayList<Task> tasks= new ArrayList<>();
+        ArrayList<Task> tasks;
+
+        try{
+            tasks=storage.load();
+        }catch (DukeException e){
+            tasks=new ArrayList<>();
+            printLine();
+            System.out.println("Oops" +e.getMessage());
+            printLine();
+        }
 
         printLine();
         System.out.println("Hello! I'm yy");
@@ -103,14 +122,14 @@ public class Duke {
                     printList(tasks);
                     break;
                 case "mark":
-                    handleMark(input, tasks);
+                    handleMark(input, tasks,storage);
                     break;
                 case "unmark":
-                    handleUnmark(input, tasks);
+                    handleUnmark(input, tasks,storage);
                     break;
                 case "todo":
                     try {
-                        handleTodo(input,tasks);
+                        handleTodo(input,tasks,storage);
                     } catch (DukeException e) {
                         printLine();
                         System.out.println(" OOPS!!! " + e.getMessage());
@@ -119,7 +138,7 @@ public class Duke {
                     break;
                 case "deadline":
                     try {
-                        handleDeadline(input, tasks);
+                        handleDeadline(input, tasks,storage);
                     } catch (DukeException e) {
                         printLine();
                         System.out.println(" OOPS!!! " + e.getMessage());
@@ -128,7 +147,7 @@ public class Duke {
                     break;
                 case "event":
                     try {
-                        handleEvent(input, tasks);
+                        handleEvent(input, tasks,storage);
                     } catch (DukeException e) {
                         printLine();
                         System.out.println(" OOPS!!! " + e.getMessage());

@@ -19,7 +19,13 @@ public class Events extends Task{
         this.to= to;
     }
 
+
     public String toString(){
         return "[E]"+super.toString()+"(from:" +getFrom()+"to:"+ getTo()+")";
     }
+
+    public String toStorageString() {
+        return "E | " + (isDone?"1" :"0") +" | " + description +" | " +getFrom()+ " | "+ getTo();
+    }
 }
+
