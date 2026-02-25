@@ -82,6 +82,20 @@ public class Duke {
 
     }
 
+    public static void handleDelete(String input, ArrayList<Task> tasks){
+        String [] parts = input.split(" ");
+        int taskNumber = Integer.parseInt(parts[1]);
+
+        printLine();
+        System.out.println("Noted. I've removed this task:");
+        System.out.println(tasks.get(taskNumber-1).toString());
+
+        tasks.remove(taskNumber-1);
+
+        System.out.println("Now you have " + tasks.size() + " tasks in the list");
+
+    }
+
     public static void main(String[] args) {
         String input;
         Scanner in = new Scanner(System.in);
@@ -136,7 +150,7 @@ public class Duke {
                     }
                     break;
                 case "delete":
-
+                    handleDelete(input,tasks);
                     break;
                 case "bye":
                     printLine();
