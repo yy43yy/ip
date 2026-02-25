@@ -91,7 +91,7 @@ public class Duke {
 
     }
 
-    public static void handleDelete(String input, ArrayList<Task> tasks){
+    public static void handleDelete(String input, ArrayList<Task> tasks,Storage storage) throws DukeException{
         String [] parts = input.split(" ");
         int taskNumber = Integer.parseInt(parts[1]);
 
@@ -100,6 +100,8 @@ public class Duke {
         System.out.println(tasks.get(taskNumber-1).toString());
 
         tasks.remove(taskNumber-1);
+
+        storage.writeToFile(tasks);
 
         System.out.println("Now you have " + tasks.size() + " tasks in the list");
 
@@ -169,7 +171,7 @@ public class Duke {
                     }
                     break;
                 case "delete":
-                    handleDelete(input,tasks);
+                    handleDelete(input,tasks,storage);
                     break;
                 case "bye":
                     printLine();
