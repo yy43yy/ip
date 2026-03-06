@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Parser {
     public static boolean parse(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String[] words = input.split(" ", 2);
@@ -28,6 +30,9 @@ public class Parser {
         case "bye":
             ui.goodbyeMessage();
             return true;
+        case "find":
+            handleFind(input, tasks, ui);
+            break;
         default:
             throw new DukeException("I'm sorry, but I don't know what that means :-(");
         }
@@ -96,5 +101,15 @@ public class Parser {
         Task removed = tasks.removeTask(taskNumber - 1);
         storage.writeToFile(tasks.getTasks());
         ui.taskDeletedMessage(removed, tasks.size());
+    }
+    public static void handleFind(String input, TaskList tasks, Ui ui) throws DukeException {
+        String keyword = input.substring(4).trim();
+
+        if (keyword.isEmpty()) {
+            throw new DukeException("The keyword for find cannot be empty.");
+        }
+
+        ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
+        ui.showMatchingTasks(matchingTasks);
     }
 }

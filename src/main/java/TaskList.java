@@ -10,6 +10,16 @@ public class TaskList {
         this.tasks = tasks;
     }
 
+    public ArrayList<Task> findTasks(String keyword){
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+
+        for (Task task : tasks){
+            if(task.getDescription().contains(keyword)){
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
+    }
     public void addTask(Task task){
         tasks.add(task);
     }

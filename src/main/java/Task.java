@@ -20,6 +20,10 @@ public abstract class Task {
         isDone = false;
     }
 
+    public String getDescription(){
+        return description;
+    }
+
     public String toString() {
         return "[" + getStatusIcon() + "]" + description;
     }
