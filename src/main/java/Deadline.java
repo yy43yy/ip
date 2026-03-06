@@ -1,22 +1,38 @@
-public class Deadline extends Task{
-    protected String by;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
-    public Deadline(String description, String by){
+public class Deadline extends Task {
+    protected LocalDate by;
+
+    public Deadline(String description, String by) throws DukeException {
         super(description);
-        this.by = by;
+        try {
+            this.by = LocalDate.parse(by.trim());
+        } catch (DateTimeParseException e) {
+            throw new DukeException("Please use date format yyyy-MM-dd, e.g. 2019-12-02");
+        }
     }
-    public String getBy(){
+
+    public LocalDate getBy() {
         return by;
     }
-    public void setBy(String by){
-        this.by = by;
+
+    public void setBy(String by) throws DukeException {
+        try {
+            this.by = LocalDate.parse(by.trim());
+        } catch (DateTimeParseException e) {
+            throw new DukeException("Please use date format yyyy-MM-dd, e.g. 2019-12-02");
+        }
     }
-    public String toString(){
-        return "[D]" + super.toString() + "(by:" +getBy() +")";
+
+    @Override
+    public String toString() {
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        return "[D]" + super.toString() + " (by: " + getBy().format(outputFormatter) + ")";
     }
 
     public String toStorageString() {
-        return "D | " + (isDone?"1" :"0") +" | " + description + " | "+getBy();
+        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + getBy();
     }
 }
-
