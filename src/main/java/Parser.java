@@ -1,6 +1,22 @@
 import java.util.ArrayList;
 
+/**
+ * Parses user input and executes the corresponding command.
+ */
+
 public class Parser {
+
+    /**
+     * Parses the user's input and performs the requested action.
+     *
+     * @param input The full command entered by the user.
+     * @param tasks The task list to be modified or displayed.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @return True if the command is "bye", otherwise false.
+     * @throws DukeException If the command is invalid or cannot be processed.
+     */
+
     public static boolean parse(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String[] words = input.split(" ", 2);
         String command = words[0];
@@ -40,6 +56,16 @@ public class Parser {
         return false;
     }
 
+    /**
+     * Marks the specified task as done.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list containing the task.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @throws DukeException If the task number is invalid.
+     */
+
     public static void handleMark(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String[] parts = input.split(" ");
         int taskNumber = Integer.parseInt(parts[1]);
@@ -48,6 +74,16 @@ public class Parser {
         ui.taskMarkedMessage(tasks.get(taskNumber - 1));
     }
 
+    /**
+     * Marks the specified task as not done.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list containing the task.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @throws DukeException If the task number is invalid.
+     */
+
     public static void handleUnmark(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String[] parts = input.split(" ");
         int taskNumber = Integer.parseInt(parts[1]);
@@ -55,6 +91,16 @@ public class Parser {
         storage.writeToFile(tasks.getTasks());
         ui.taskUnmarkedMessage(tasks.get(taskNumber - 1));
     }
+
+    /**
+     * Creates and adds a todo task to the task list.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list to add the task to.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @throws DukeException If the todo description is empty.
+     */
 
     public static void handleTodo(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String description = input.substring(4).trim();
@@ -67,6 +113,16 @@ public class Parser {
         storage.writeToFile(tasks.getTasks());
         ui.taskAddedMessage(task, tasks.size());
     }
+
+    /**
+     * Creates and adds a deadline task to the task list.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list to add the task to.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @throws DukeException If the deadline description or date is invalid.
+     */
 
     public static void handleDeadline(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String description = input.substring(8).trim();
@@ -81,6 +137,16 @@ public class Parser {
         ui.taskAddedMessage(task, tasks.size());
     }
 
+    /**
+     * Creates and adds an event task to the task list.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list to add the task to.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @throws DukeException If the event description or timing is invalid.
+     */
+
     public static void handleEvent(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String description = input.substring(5).trim();
         if (description.isEmpty()) {
@@ -94,6 +160,16 @@ public class Parser {
         ui.taskAddedMessage(task, tasks.size());
     }
 
+    /**
+     * Deletes the specified task from the task list.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list containing the task.
+     * @param ui The user interface used for displaying messages.
+     * @param storage The storage object used for saving tasks.
+     * @throws DukeException If the task number is invalid.
+     */
+
     public static void handleDelete(String input, TaskList tasks, Ui ui, Storage storage) throws DukeException {
         String[] parts = input.split(" ");
         int taskNumber = Integer.parseInt(parts[1]);
@@ -102,6 +178,16 @@ public class Parser {
         storage.writeToFile(tasks.getTasks());
         ui.taskDeletedMessage(removed, tasks.size());
     }
+
+    /**
+     * Finds and displays tasks whose descriptions contain the given keyword.
+     *
+     * @param input The user's input command.
+     * @param tasks The task list to search in.
+     * @param ui The user interface used for displaying messages.
+     * @throws DukeException If the search keyword is empty.
+     */
+
     public static void handleFind(String input, TaskList tasks, Ui ui) throws DukeException {
         String keyword = input.substring(4).trim();
 

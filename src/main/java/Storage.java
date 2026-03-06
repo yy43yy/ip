@@ -3,12 +3,30 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles loading tasks from and saving tasks to the storage file.
+ */
+
 public class Storage {
     private final Path filePath;
+
+    /**
+     * Creates a Storage object using the given folder and file name.
+     *
+     * @param folder The folder where the file is stored.
+     * @param fileName The name of the storage file.
+     */
 
     public Storage(String folder, String fileName){
         this.filePath= Paths.get(folder,fileName);
     }
+
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return An ArrayList of tasks loaded from the file.
+     * @throws DukeException If the file cannot be read.
+     */
 
     public ArrayList<Task> load() throws DukeException{
         try{
@@ -28,6 +46,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves the given task list to the storage file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws DukeException If the tasks cannot be written to the file.
+     */
+
     public void writeToFile(ArrayList<Task> tasks) throws DukeException{
         try{
             Path parent = filePath.getParent();
@@ -44,7 +69,13 @@ public class Storage {
             throw new DukeException("Fail to save task: " +e.getMessage());
         }
     }
-
+    /**
+     * Converts a line from the storage file into a Task object.
+     *
+     * @param line A single line read from the storage file.
+     * @return The corresponding Task object.
+     * @throws DukeException If the task type is invalid or the line format is incorrect.
+     */
     private Task parseLine(String line) throws DukeException{
         String[] parts = line.split("\\|");
         String type = parts[0].trim();
