@@ -51,7 +51,7 @@ public class Ui {
 
     public void errorMessage(String message){
         printLine();
-        System.out.println("OOPSSS " + message);
+        System.out.println("OOPSSS!!! " + message);
         printLine();
     }
     /**
@@ -62,8 +62,12 @@ public class Ui {
 
     public void printList(TaskList tasks) {
         printLine();
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
+        if (tasks.size() == 0) {
+            System.out.println("No tasks in your list.");
+        } else {
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + ". " + tasks.get(i));
+            }
         }
         printLine();
     }
@@ -133,9 +137,13 @@ public class Ui {
 
     public void showMatchingTasks(ArrayList<Task> matchingTasks) {
         printLine();
-        System.out.println("Here are the matching tasks in your list:");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println((i + 1) + ". " + matchingTasks.get(i));
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No matching tasks found.");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println((i + 1) + ". " + matchingTasks.get(i));
+            }
         }
         printLine();
     }

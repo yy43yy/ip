@@ -76,33 +76,43 @@ public class Storage {
      * @return The corresponding Task object.
      * @throws DukeException If the task type is invalid or the line format is incorrect.
      */
-    private Task parseLine(String line) throws DukeException{
+    private Task parseLine(String line) throws DukeException {
         String[] parts = line.split("\\|");
+
+        if (parts.length < 3) {
+            throw new DukeException("Invalid task format in storage file: " + line);
+        }
+
         String type = parts[0].trim();
-        boolean isDone = parts[1].equals("1");
+        boolean isDone = parts[1].trim().equals("1");
         String detail = parts[2].trim();
 
         Task task;
 
-        switch (type){
+        switch (type) {
         case "T":
             task = new Todos(detail);
             break;
         case "D":
-            task = new Deadline(detail,parts[3].trim());
+            if (parts.length < 4) {
+                throw new DukeException("Invalid deadline format in storage file: " + line);
+            }
+            task = new Deadline(detail, parts[3].trim());
             break;
         case "E":
-            task = new Events(detail,parts[3].trim(),parts[4].trim());
+            if (parts.length < 5) {
+                throw new DukeException("Invalid event format in storage file: " + line);
+            }
+            task = new Events(detail, parts[3].trim(), parts[4].trim());
             break;
         default:
-            throw new DukeException("Unknown task type" + type);
+            throw new DukeException("Unknown task type: " + type);
         }
 
-        if (isDone){
+        if (isDone) {
             task.markDone();
         }
         return task;
-
     }
 
 

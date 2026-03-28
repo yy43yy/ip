@@ -64,10 +64,10 @@ public class Events extends Task{
      * @return A formatted string showing the event details.
      */
 
-    public String toString(){
-        return "[E]"+super.toString()+"(from:" +getFrom()+"to:"+ getTo()+")";
+    @Override
+    public String toString() {
+        return "[E]" + super.toString() + " (from: " + getFrom() + " to: " + getTo() + ")";
     }
-
     /**
      * Returns the string representation of this event for file storage.
      *

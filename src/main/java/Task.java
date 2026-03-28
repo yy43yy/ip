@@ -59,7 +59,7 @@ public abstract class Task {
      *
      * @return A formatted string showing the task status and description.
      */
-
+    @Override
     public String toString() {
         return "[" + getStatusIcon() + "]" + description;
     }
